@@ -136,17 +136,28 @@
 #define CONFIG_CMD_USB
 /* USB Support*/
 
-#define CONFIG_BOOTDELAY	1
+#define CONFIG_BOOTDELAY	3
+
+#if 0
 #define CONFIG_BOOTARGS		"noinitrd root=/dev/nfs rw nfsroot=192.168.0.1:/home/tekkaman/working/nfs/rootfs ip=192.168.0.2:192.168.0.1::255.255.255.0 console=ttySAC0,115200 init=/linuxrc mem=64M"
-#define CONFIG_ETHADDR	        08:08:11:18:12:27
-#define CONFIG_NETMASK          255.255.255.0
+#else
+#define CONFIG_BOOTARGS		"noinitrd root=/dev/mtdblock3 initrd=/linuxrc console=ttySAC0"
+#endif
+
+#define CONFIG_ETHADDR	    08:08:11:18:12:27
+#define CONFIG_NETMASK      255.255.255.0
 #define CONFIG_IPADDR		192.168.0.2
 #define CONFIG_SERVERIP		192.168.0.1
 #define CONFIG_GATEWAYIP	192.168.0.1
 #define CONFIG_OVERWRITE_ETHADDR_ONCE
 
 /*#define CONFIG_BOOTFILE	"elinos-lart" */
+#if 0
 #define CONFIG_BOOTCOMMAND	"nfs 0x30008000 192.168.0.1:/home/tekkaman/working/nfs/zImage.img;bootm"
+#else
+#define CONFIG_BOOTCOMMAND	"nand read 0x30008000 0x60000 0x500000;bootm 0x30008000"
+#endif
+
 #define	CONFIG_EXTRA_ENV_SETTINGS					\
 	"tekkaman=bmp d 70000\0 "				\
 	"stdin=serial\0"					\
@@ -322,12 +333,19 @@
 
 #define CONFIG_JFFS2_CMDLINE 1
 #define MTDIDS_DEFAULT "nand0=nandflash0"
+#if 0
 #define MTDPARTS_DEFAULT "mtdparts=nandflash0:384k(bootloader)," \
 					      "128k(params)," \
 					      "5m(kernel)," \
 					      "-(root)"
 
+#else
+#define MTDPARTS_DEFAULT "mtdparts=nandflash0:256k(bootloader)," \
+					      "128k(params)," \
+					      "5m(kernel)," \
+					      "-(root)"
 
+#endif
 #define ENABLE_CMD_LOADB_X	1
 #define ENABLE_CMD_NAND_YAFFS	1
 #define ENABLE_CMD_NAND_YAFFS_SKIPFB	1

@@ -129,6 +129,7 @@ void blue_LED_off(void) __attribute__((weak, alias("__blue_LED_off")));
 #if defined(CONFIG_ARM_DCC) && !defined(CONFIG_BAUDRATE)
 #define CONFIG_BAUDRATE 115200
 #endif
+
 static int init_baudrate (void)
 {
 	char tmp[64];	/* long enough for environment variables */
@@ -144,11 +145,10 @@ static int display_banner (void)
 {
 #if defined(CONFIG_MINI2440_LED) 	
 	struct s3c24x0_gpio * const gpio = s3c24x0_get_base_gpio();
-	writel(0x101, &gpio->GPBDAT);  //tekkamanninja
+	//writel(0x101, &gpio->GPBDAT);  //tekkamanninja
+	writel(0x100, &gpio->GPBDAT); /* 关闭启动时的蜂鸣器 */
 #endif
-	printf ("\n\n%s\n\n", version_string);	
-	printf (" modified by tekkamanninja (tekkamanninja@163.com)\n");
-	printf (" Love Linux forever!!\n\n");
+	printf ("\n\n%s\n\n", version_string);
 	debug ("U-Boot code: %08lX -> %08lX  BSS: -> %08lX\n",
 	       _armboot_start, _bss_start, _bss_end);
 #ifdef CONFIG_MODEM_SUPPORT
@@ -456,12 +456,6 @@ extern void davinci_eth_set_mac_addr (const u_int8_t *addr);
 #endif
 #if defined(CONFIG_MINI2440_LED) 	
 	writel(0x0, &gpio->GPBDAT);  //tekkamanninja
-#endif
- 
-#if defined(CONFIG_CFB_CONSOLE)        
-	printf ("%s\n", version_string);
-	printf ("modified by tekkamanninja\n(tekkamanninja@163.com)\n");
-	printf ("Love Linux forever!!\n");
 #endif
 	/* main_loop() can return to retry autoboot, if so just run it again. */
 	for (;;) {

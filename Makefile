@@ -157,7 +157,7 @@ sinclude $(obj)include/autoconf.mk
 # load ARCH, BOARD, and CPU configuration
 include $(obj)include/config.mk
 export	ARCH CPU BOARD VENDOR SOC
-CROSS_COMPILE =  arm-tekkaman-linux-gnueabi-
+CROSS_COMPILE =  /opt/arm-none-linux-guneabi-4.4.3/bin/arm-linux-
 # set default to nothing for native builds
 ifeq ($(HOSTARCH),$(ARCH))
 CROSS_COMPILE ?=
